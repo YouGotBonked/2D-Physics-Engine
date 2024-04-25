@@ -1,94 +1,214 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-//array that stores all the Ball objects
 const BALLZ = [];
 
 let LEFT, UP, RIGHT, DOWN;
+let LEFT2, UP2, RIGHT2, DOWN2;
 
-//creating a Ball class
-class Ball{
-    //special method that gets called at the instantiation
-    constructor(x, y, r){
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.player = false;
-        //pushing the Ball object into the BALLZ array
-        BALLZ.push(this);
-    }
+//velocity gets multiplied by (1-friction)
+let friction = 0.01;
 
-    drawBall(){
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI);
-        ctx.strokeStyle = "black";
-        ctx.stroke();
-        ctx.fillStyle = "red";
-        ctx.fill();
-        ctx.closePath();
-    }
+class Ball {
+  constructor(x, y, r, color) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.vel_x = 0;
+    this.vel_y = 0;
+    this.acc_x = 0;
+    this.acc_y = 0;
+    this.color = color;
+    this.acceleration = 1;
+    this.playerKey = false;
+    this.playerArrow = false;
+    BALLZ.push(this);
+  }
+
+  drawBall(color) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  //displaying the current acceleration and the velocity of the ball
+  display() {
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x + this.acc_x * 100, this.y + this.acc_y * 100);
+    ctx.strokeStyle = "green";
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x + this.vel_x * 10, this.y + this.vel_y * 10);
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    ctx.closePath();
+  }
 }
 
-function keyControl(b){
-    canvas.addEventListener('keydown', function(e){
-        if(e.key === "a" || e.key === "A"){
-            LEFT = true;
-        }
-        if(e.key === "w" || e.key === "W"){
-            UP = true;
-        }
-        if(e.key === "d" || e.key === "D"){
-            RIGHT = true;
-        }
-        if(e.key === "s" || e.key === "S"){
-            DOWN = true;
-        }
-    });
+function keyControl(b) {
+  canvas.addEventListener('keydown', function(e) {
+    if (e.key === "a" || e.key === "A") {
+      LEFT = true;
+    }
+    if (e.key === "w" || e.key === "W") {
+      UP = true;
+    }
+    if (e.key === "d" || e.key === "D") {
+      RIGHT = true;
+    }
+    if (e.key === "s" || e.key === "S") {
+      DOWN = true;
+    }
+  });
 
-    canvas.addEventListener('keyup', function(e){
-        if(e.key === "a" || e.key === "A"){
-            LEFT = false;
-        }
-        if(e.key === "w" || e.key === "W"){
-            UP = false;
-        }
-        if(e.key === "d" || e.key === "D"){
-            RIGHT = false;
-        }
-        if(e.key === "s" || e.key === "S"){
-            DOWN = false;
-        }
-    });
+  canvas.addEventListener('keyup', function(e) {
+    if (e.key === "a" || e.key === "A") {
+      LEFT = false;
+    }
+    if (e.key === "w" || e.key === "W") {
+      UP = false;
+    }
+    if (e.key === "d" || e.key === "D") {
+      RIGHT = false;
+    }
+    if (e.key === "s" || e.key === "S") {
+      DOWN = false;
+    }
+  });
 
-    if(LEFT){
-        b.x--;
+  //if true, the accelertion component gets a certain value
+  if (LEFT) {
+    b.acc_x = -b.acceleration;
+  }
+  if (UP) {
+    b.acc_y = -b.acceleration;
+  }
+  if (RIGHT) {
+    b.acc_x = b.acceleration;
+  }
+  if (DOWN) {
+    b.acc_y = b.acceleration;
+  }
+  if (!UP && !DOWN) {
+    b.acc_y = 0;
+  }
+  if (!RIGHT && !LEFT) {
+    b.acc_x = 0;
+  }
+
+  //acceleration values added to the velocity components
+  b.vel_x += b.acc_x;
+  b.vel_y += b.acc_y;
+  //velocity gets multiplied by a number between 0 and 1
+  b.vel_x *= 1 - friction;
+  b.vel_y *= 1 - friction;
+  //velocity values added to the current x, y position
+  b.x += b.vel_x;
+  b.y += b.vel_y;
+
+}
+
+function arrowControl(b) {
+  canvas.addEventListener('keydown', function(e) {
+    if (e.key === "ArrowLeft") {
+      LEFT2 = true;
     }
-    if(UP){
-        b.y--;
+    if (e.key === "ArrowUp") {
+      UP2 = true;
     }
-    if(RIGHT){
-        b.x++;
+    if (e.key === "ArrowRight") {
+      RIGHT2 = true;
     }
-    if(DOWN){
-        b.y++;
+    if (e.key === "ArrowDown") {
+      DOWN2 = true;
     }
+  });
+
+  canvas.addEventListener('keyup', function(e) {
+    if (e.key === "ArrowLeft") {
+      LEFT2 = false;
+    }
+    if (e.key === "ArrowUp") {
+      UP2 = false;
+    }
+    if (e.key === "ArrowRight") {
+      RIGHT2 = false;
+    }
+    if (e.key === "ArrowDown") {
+      DOWN2 = false;
+    }
+  });
+
+  //if true, the accelertion component gets a certain value
+  if (LEFT2) {
+    b.acc_x = -b.acceleration;
+  }
+  if (UP2) {
+    b.acc_y = -b.acceleration;
+  }
+  if (RIGHT2) {
+    b.acc_x = b.acceleration;
+  }
+  if (DOWN2) {
+    b.acc_y = b.acceleration;
+  }
+  if (!UP2 && !DOWN2) {
+    b.acc_y = 0;
+  }
+  if (!RIGHT2 && !LEFT2) {
+    b.acc_x = 0;
+  }
+
+  //acceleration values added to the velocity components
+  b.vel_x += b.acc_x;
+  b.vel_y += b.acc_y;
+  //velocity gets multiplied by a number between 0 and 1
+  b.vel_x *= 1 - friction;
+  b.vel_y *= 1 - friction;
+  //velocity values added to the current x, y position
+  b.x += b.vel_x;
+  b.y += b.vel_y;
 
 }
 
 function mainLoop() {
-    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    BALLZ.forEach((b) => {
-        b.drawBall();
-        if (b.player){
-            keyControl(b);
-        }
-    });
-    requestAnimationFrame(mainLoop);
+  ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  BALLZ.forEach((b) => {
+    b.drawBall(b.color);
+    if (b.playerKey) {
+      keyControl(b);
+    }else if (b.playerArrow)
+    {
+      arrowControl(b);
+    }
+    b.display();
+  });
+  requestAnimationFrame(mainLoop);
 }
 
-//create two Ball objects
-let Ball1 = new Ball(200, 200, 30);
-let Ball2 = new Ball(300, 300, 20);
-Ball1.player = true;
+canvas.addEventListener('keypress', function(e){
+  if (e.key === "r"||e.key === "R")
+  {
+    BALLZ.forEach((b) => {
+      b.x = canvas.clientWidth/2wsa;
+      b.y = canvas.clientHeight/2;
+      b.vel_x = 0;
+      b.vel_y = 0;
+      b.acc_x = 0;
+      b.acc_y = 0;
+    });
+  }
+})
+let Ball1 = new Ball(200, 200, 30, "red");
+Ball1.playerKey = true;
+let Ball2 = new Ball(400, 200, 30, "blue");
+Ball2.playerArrow = true;
 
 requestAnimationFrame(mainLoop);
