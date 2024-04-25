@@ -197,7 +197,7 @@ canvas.addEventListener('keypress', function(e){
   if (e.key === "r"||e.key === "R")
   {
     BALLZ.forEach((b) => {
-      b.x = canvas.clientWidth/2wsa;
+      b.x = canvas.clientWidth/2w;
       b.y = canvas.clientHeight/2;
       b.vel_x = 0;
       b.vel_y = 0;
