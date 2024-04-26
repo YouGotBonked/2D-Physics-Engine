@@ -270,7 +270,7 @@ function collisionRepositioner(b1, b2){
 
 function mainLoop() {
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-  BALLZ.forEach((b) => {
+  BALLZ.forEach((b, index) => {
     b.drawBall(b.color);
     if (b.playerKey) {
       keyControl(b);
