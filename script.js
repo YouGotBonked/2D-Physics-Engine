@@ -166,11 +166,10 @@ function keyControl(b) {
       localFriction = brakeAmt;
     }*/
   
-      b.acc = b.acc.unit().mult(b.acceleration);
-      b.vel = b.vel.add(b.acc);
-      b.vel = b.vel.mult(1-friction);
-      b.x += b.vel.x;
-      b.y += b.vel.y;
+    b.acc = b.acc.unit().mult(b.acceleration);
+    b.vel = b.vel.add(b.acc);
+    b.vel = b.vel.mult(1-friction);
+    b.pos = b.pos.add(b.vel);
 
 }
 
@@ -245,8 +244,28 @@ function arrowControl(b) {
     b.acc = b.acc.unit().mult(b.acceleration);
     b.vel = b.vel.add(b.acc);
     b.vel = b.vel.mult(1-friction);
-    b.x += b.vel.x;
-    b.y += b.vel.y;
+    b.pos = b.pos.add(b.vel);
+}
+
+function round(number, precision){
+    let factor = 10**precision;
+    return Math.round(number * factor) / factor;
+}
+
+function collisionDetect(b1, b2){
+    if(b1.r + b2.r >= b2.pos.subtr(b1.pos).mag()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function collisionRepositioner(b1, b2){
+    let dist = b1.pos.subtr(b2.pos);
+    let pen_depth = b1.r + b2.r - dist.mag();
+    let pen_res = dist.unit().mult(pen_depth/2);
+    b1.pos = b1.pos.add(pen_res);
+    b2.pos = b2.pos.add(pen_res.mult(-1));
 }
 
 function mainLoop() {
@@ -258,6 +277,11 @@ function mainLoop() {
     }else if (b.playerArrow)
     {
       arrowControl(b);
+    }
+    for(let i = index+1; i<BALLZ.length; i++){
+        if(collisionDetect(BALLZ[index], BALLZ[i])){
+            collisionRepositioner(BALLZ[index], BALLZ[i]);
+        }
     }
     b.display();
   });
