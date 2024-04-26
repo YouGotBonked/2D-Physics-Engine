@@ -11,7 +11,7 @@ let friction = 0.01;
 let globalBrakeAmt = 0.1;
 let brakeAmt = globalBrakeAmt;
 let brakeAmt2 = globalBrakeAmt;
-=======
+//=====================
 let friction = 0.05;
 
 class Ball {
