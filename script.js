@@ -278,7 +278,7 @@ function mainLoop() {
     {
       arrowControl(b);
     }
-  }
+  
     for(let i = index+1; i<BALLZ.length; i++){
         if(collisionDetect(BALLZ[index], BALLZ[i])){
             collisionRepositioner(BALLZ[index], BALLZ[i]);
