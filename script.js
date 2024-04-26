@@ -63,8 +63,7 @@ class Vector{
 
 class Ball {
     constructor(x, y, r, color) {
-      this.x = x;
-      this.y = y;
+      this.pos = new Vector(x,y);
       this.r = r;
       this.vel = new Vector(0,0);
       this.acc = new Vector(0,0);
@@ -74,17 +73,17 @@ class Ball {
       this.playerArrow = false;
       BALLZ.push(this);
     }
-  
+
     drawBall(color) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+      ctx.arc(this.pos.x, this.pos.y, this.r, 0, 2 * Math.PI);
       ctx.strokeStyle = "black";
       ctx.stroke();
       ctx.fillStyle = color;
       ctx.fill();
       ctx.closePath();
     }
-  
+
     //displaying the current acceleration and the velocity of the ball
     display() {
       this.vel.drawVec(550, 400, 10, "green");
@@ -118,7 +117,7 @@ function keyControl(b) {
         }
       }*/
     });
-  
+
     canvas.addEventListener('keyup', function(e) {
       if (e.key === "a" || e.key === "A") {
         LEFT = false;
@@ -137,7 +136,7 @@ function keyControl(b) {
         brakeAmt = globalBrakeAmt
       }*/
     });
-  
+
     //if true, the accelertion component gets a certain value
     if (LEFT) {
       b.acc.x = -b.acceleration;
@@ -157,7 +156,7 @@ function keyControl(b) {
     if (!RIGHT && !LEFT) {
       b.acc.x = 0;
     }
-    
+
     /*var localFriction = friction;
     if((b.velocity == 0) && BRAKE) {
       brakeAmt = 1;
@@ -165,7 +164,7 @@ function keyControl(b) {
     if(BRAKE) {
       localFriction = brakeAmt;
     }*/
-  
+
     b.acc = b.acc.unit().mult(b.acceleration);
     b.vel = b.vel.add(b.acc);
     b.vel = b.vel.mult(1-friction);
@@ -194,7 +193,7 @@ function arrowControl(b) {
         }
       }*/
     });
-  
+
     canvas.addEventListener('keyup', function(e) {
       if (e.key === "ArrowLeft") {
         LEFT2 = false;
@@ -213,7 +212,7 @@ function arrowControl(b) {
         brakeAmt2 = globalBrakeAmt;
       }*/
     });
-  
+
     //if true, the accelertion component gets a certain value
     if (LEFT2) {
       b.acc.x = -b.acceleration;
@@ -240,7 +239,7 @@ function arrowControl(b) {
       if(BRAKE2) {
         localFriction = brakeAmt2;
       }*/
-  
+
     b.acc = b.acc.unit().mult(b.acceleration);
     b.vel = b.vel.add(b.acc);
     b.vel = b.vel.mult(1-friction);
@@ -278,7 +277,7 @@ function mainLoop() {
     {
       arrowControl(b);
     }
-  
+
     for(let i = index+1; i<BALLZ.length; i++){
         if(collisionDetect(BALLZ[index], BALLZ[i])){
             collisionRepositioner(BALLZ[index], BALLZ[i]);
@@ -306,6 +305,5 @@ let Ball1 = new Ball(200, 200, 30, "red");
 Ball1.playerKey = true;
 let Ball2 = new Ball(400, 200, 30, "blue");
 Ball2.playerArrow = true;
-let Ball3 = new Ball(400, 200, 30, "green");
 
 requestAnimationFrame(mainLoop);
