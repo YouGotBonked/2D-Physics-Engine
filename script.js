@@ -1,13 +1,16 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-// this code was all written by matthew kouveliotes
+
 const BALLZ = [];
 
-let LEFT, UP, RIGHT, DOWN;
-let LEFT2, UP2, RIGHT2, DOWN2;
+let LEFT, UP, RIGHT, DOWN, BRAKE;
+let LEFT2, UP2, RIGHT2, DOWN2, BRAKE2;
 
 //velocity gets multiplied by (1-friction)
 let friction = 0.01;
+let globalBrakeAmt = 0.1;
+let brakeAmt = globalBrakeAmt;
+let brakeAmt2 = globalBrakeAmt;
 
 class Ball {
   constructor(x, y, r, color) {
@@ -66,6 +69,12 @@ function keyControl(b) {
     if (e.key === "s" || e.key === "S") {
       DOWN = true;
     }
+    if(e.key === "Shift") {
+      BRAKE = true;
+      if(brakeAmt < 1) {
+        brakeAmt+= 0.0001;
+      }
+    }
   });
 
   canvas.addEventListener('keyup', function(e) {
@@ -80,6 +89,10 @@ function keyControl(b) {
     }
     if (e.key === "s" || e.key === "S") {
       DOWN = false;
+    }
+    if(e.key === "Shift") {
+      BRAKE = false;
+      brakeAmt = globalBrakeAmt
     }
   });
 
@@ -102,13 +115,20 @@ function keyControl(b) {
   if (!RIGHT && !LEFT) {
     b.acc_x = 0;
   }
+  var localFriction = friction;
+  if((b.velocity == 0) && BRAKE) {
+    brakeAmt = 1;
+  }
+  if(BRAKE) {
+    localFriction = brakeAmt;
+  }
 
   //acceleration values added to the velocity components
   b.vel_x += b.acc_x;
   b.vel_y += b.acc_y;
   //velocity gets multiplied by a number between 0 and 1
-  b.vel_x *= 1 - friction;
-  b.vel_y *= 1 - friction;
+  b.vel_x *= 1 - localFriction;
+  b.vel_y *= 1 - localFriction;
   //velocity values added to the current x, y position
   b.x += b.vel_x;
   b.y += b.vel_y;
@@ -129,6 +149,12 @@ function arrowControl(b) {
     if (e.key === "ArrowDown") {
       DOWN2 = true;
     }
+    if(e.key === "Enter") {
+      BRAKE2 = true;
+      if(brakeAmt2 < 1) {
+        brakeAmt2+= 0.0001;
+      }
+    }
   });
 
   canvas.addEventListener('keyup', function(e) {
@@ -143,6 +169,10 @@ function arrowControl(b) {
     }
     if (e.key === "ArrowDown") {
       DOWN2 = false;
+    }
+    if(e.key === "Enter") {
+      BRAKE2 = false;
+      brakeAmt2 = globalBrakeAmt;
     }
   });
 
@@ -165,13 +195,20 @@ function arrowControl(b) {
   if (!RIGHT2 && !LEFT2) {
     b.acc_x = 0;
   }
+  if(b.velocity == 0 && BRAKE2) {
+    brakeAmt2 = 1;
+  }
+  var localFriction = friction;
+    if(BRAKE2) {
+      localFriction = brakeAmt2;
+    }
 
   //acceleration values added to the velocity components
   b.vel_x += b.acc_x;
   b.vel_y += b.acc_y;
   //velocity gets multiplied by a number between 0 and 1
-  b.vel_x *= 1 - friction;
-  b.vel_y *= 1 - friction;
+  b.vel_x *= 1 - localFriction;
+  b.vel_y *= 1 - localFriction;
   //velocity values added to the current x, y position
   b.x += b.vel_x;
   b.y += b.vel_y;
