@@ -8,7 +8,7 @@ let LEFT2, UP2, RIGHT2, DOWN2, BRAKE2;
 
 //velocity gets multiplied by (1-friction)
 let friction = 0.05;
-let globalBrakeAmt = 0.05;
+let globalBrakeAmt = 0.1;
 let brakeAmt = globalBrakeAmt;
 let brakeAmt2 = globalBrakeAmt;
 //=====================
@@ -73,7 +73,7 @@ function keyControl(b) {
     if(e.key === "Shift") {
       BRAKE = true;
       if(brakeAmt < 1) {
-        brakeAmt+= 0.000001;
+        brakeAmt+= 0.00000000000000001;
       }
     }
   });
