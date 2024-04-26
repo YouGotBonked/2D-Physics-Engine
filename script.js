@@ -73,7 +73,7 @@ function keyControl(b) {
     if(e.key === "Shift") {
       BRAKE = true;
       if(brakeAmt < 1) {
-        brakeAmt+= 0.0001;
+        brakeAmt+= 0.000001;
       }
     }
   });
@@ -153,7 +153,7 @@ function arrowControl(b) {
     if(e.key === "Enter") {
       BRAKE2 = true;
       if(brakeAmt2 < 1) {
-        brakeAmt2+= 0.0001;
+        brakeAmt2+= 0.000001;
       }
     }
   });
