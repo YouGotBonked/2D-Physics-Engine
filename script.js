@@ -7,7 +7,7 @@ let LEFT, UP, RIGHT, DOWN;
 let LEFT2, UP2, RIGHT2, DOWN2;
 
 //velocity gets multiplied by (1-friction)
-let friction = 0.01;
+let friction = 0.05;
 
 class Ball {
   constructor(x, y, r, color) {
