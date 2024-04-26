@@ -140,22 +140,22 @@ function keyControl(b) {
   
     //if true, the accelertion component gets a certain value
     if (LEFT) {
-      b.acc_x = -b.acceleration;
+      b.acc.x = -b.acceleration;
     }
     if (UP) {
-      b.acc_y = -b.acceleration;
+      b.acc.y = -b.acceleration;
     }
     if (RIGHT) {
-      b.acc_x = b.acceleration;
+      b.acc.x = b.acceleration;
     }
     if (DOWN) {
-      b.acc_y = b.acceleration;
+      b.acc.y = b.acceleration;
     }
     if (!UP && !DOWN) {
-      b.acc_y = 0;
+      b.acc.y = 0;
     }
     if (!RIGHT && !LEFT) {
-      b.acc_x = 0;
+      b.acc.x = 0;
     }
     
     /*var localFriction = friction;
@@ -217,22 +217,22 @@ function arrowControl(b) {
   
     //if true, the accelertion component gets a certain value
     if (LEFT2) {
-      b.acc_x = -b.acceleration;
+      b.acc.x = -b.acceleration;
     }
     if (UP2) {
-      b.acc_y = -b.acceleration;
+      b.acc.y = -b.acceleration;
     }
     if (RIGHT2) {
-      b.acc_x = b.acceleration;
+      b.acc.x = b.acceleration;
     }
     if (DOWN2) {
-      b.acc_y = b.acceleration;
+      b.acc.y = b.acceleration;
     }
     if (!UP2 && !DOWN2) {
-      b.acc_y = 0;
+      b.acc.y = 0;
     }
     if (!RIGHT2 && !LEFT2) {
-      b.acc_x = 0;
+      b.acc.x = 0;
     }
     /*if(b.velocity == 0 && BRAKE2) {
       brakeAmt2 = 1;
@@ -270,10 +270,10 @@ canvas.addEventListener('keypress', function(e){
     BALLZ.forEach((b) => {
       b.x = canvas.clientWidth/2;
       b.y = canvas.clientHeight/2;
-      b.vel_x = 0;
-      b.vel_y = 0;
-      b.acc_x = 0;
-      b.acc_y = 0;
+      b.vel.x = 0;
+      b.vel.y = 0;
+      b.acc.x = 0;
+      b.acc.y = 0;
     });
   }
 })
