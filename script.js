@@ -1,6 +1,6 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-
+// this code was all written by matthew kouveliotes
 const BALLZ = [];
 
 let LEFT, UP, RIGHT, DOWN;
