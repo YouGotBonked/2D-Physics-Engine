@@ -306,5 +306,6 @@ let Ball1 = new Ball(200, 200, 30, "red");
 Ball1.playerKey = true;
 let Ball2 = new Ball(400, 200, 30, "blue");
 Ball2.playerArrow = true;
+let Ball3 = new Ball(400, 200, 30, "green");
 
 requestAnimationFrame(mainLoop);
