@@ -8,7 +8,7 @@ let LEFT2, UP2, RIGHT2, DOWN2, BRAKE2;
 
 //velocity gets multiplied by (1-friction)
 let friction = 0.05;
-let globalBrakeAmt = 0.1;
+let globalBrakeAmt = 0;
 let brakeAmt = globalBrakeAmt;
 let brakeAmt2 = globalBrakeAmt;
 //=====================
